@@ -37,8 +37,6 @@ def _pressKeyAndCollectSpeech(key: str, numberOfTimes: int) -> typing.List[str]:
 
 
 def test_moveByWord_symbolLevelWord():
-	"""Disabled due to revert of PR #11856 is: "Speak all symbols when moving by words (#11779)
-	"""
 	spy = _NvdaLib.getSpyLib()
 	spy.set_configValue(["speech", "symbolLevelWordAll"], True)
 
@@ -49,7 +47,7 @@ def test_moveByWord_symbolLevelWord():
 		'"Hello,': 'quote Hello comma,',
 		'Jim".': 'Jim quote  dot.',
 		'➔': 'right-pointing arrow',  # Speech for symbols shouldn't change
-		'👕': 't-shirt',  # Speech for symbols shouldn't change
+		'👕': 't dash shirt',  # Speech for symbols shouldn't change
 	}
 
 	textStr = ' '.join(_wordsToExpected.keys())
@@ -67,7 +65,7 @@ def test_moveByWord():
 		'(quietly)': '(quietly)',
 		'"Hello,': 'Hello,',
 		'Jim".': 'Jim .',
-		'➔': 'right pointing arrow',
+		'➔': 'right-pointing arrow',
 		'👕': 't shirt',
 	}
 
@@ -96,6 +94,25 @@ def test_moveByLine():
 	builtIn.should_be_equal(actual, list(_wordsToExpected.values()))
 
 
+def test_moveByLine_symbolLevelWord():
+	spy = _NvdaLib.getSpyLib()
+	spy.set_configValue(["speech", "symbolLevelWordAll"], True)
+
+	_wordsToExpected = {
+		'Say': 'Say',
+		'(quietly)': '(quietly)',
+		'"Hello,': 'Hello,',
+		'Jim".': 'Jim .',
+		'➔': 'right-pointing arrow',
+		'👕': 't-shirt',
+	}
+
+	textStr = '\n'.join(_wordsToExpected.keys())
+	_notepad.prepareNotepad(f"Test:\n{textStr}")  # initial new line which isn't spoken
+	actual = _pressKeyAndCollectSpeech(navToNextLineKey, numberOfTimes=len(_wordsToExpected))
+	builtIn.should_be_equal(actual, list(_wordsToExpected.values()))
+
+
 def test_moveByChar():
 	spy = _NvdaLib.getSpyLib()
 	spy.set_configValue(["speech", "symbolLevelWordAll"], False)
@@ -108,8 +125,29 @@ def test_moveByChar():
 		'right paren',
 		'e',
 		'comma',
-		'right pointing arrow',
-		't shirt',
+		'right dash pointing arrow',
+		't dash shirt',
+	]
+
+	_notepad.prepareNotepad(f" {_text}")
+	actual = _pressKeyAndCollectSpeech(navToNextCharKey, numberOfTimes=len(_expected))
+	builtIn.should_be_equal(actual, _expected)
+
+
+def test_moveByChar_symbolLevelWord():
+	spy = _NvdaLib.getSpyLib()
+	spy.set_configValue(["speech", "symbolLevelWordAll"], True)
+
+	_text = 'S ()e,➔👕'  # to speed up test, reduce superfluous characters
+	_expected = [
+		'S',
+		'space',
+		'left paren',
+		'right paren',
+		'e',
+		'comma',
+		'right dash pointing arrow',
+		't dash shirt',
 	]
 
 	_notepad.prepareNotepad(f" {_text}")
