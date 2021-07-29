@@ -47,7 +47,7 @@ def test_moveByWord_symbolLevelWord():
 		'"Hello,': 'quote Hello comma,',
 		'Jim".': 'Jim quote  dot.',
 		'➔': 'right-pointing arrow',  # Speech for symbols shouldn't change
-		'👕': 't dash shirt',  # Speech for symbols shouldn't change
+		'👕': 't-shirt',  # Speech for symbols shouldn't change
 	}
 
 	textStr = ' '.join(_wordsToExpected.keys())
@@ -66,7 +66,7 @@ def test_moveByWord():
 		'"Hello,': 'Hello,',
 		'Jim".': 'Jim .',
 		'➔': 'right-pointing arrow',
-		'👕': 't shirt',
+		'👕': 't-shirt',
 	}
 
 	textStr = ' '.join(_wordsToExpected.keys())
@@ -125,8 +125,8 @@ def test_moveByChar():
 		'right paren',
 		'e',
 		'comma',
-		'right dash pointing arrow',
-		't dash shirt',
+		'right-pointing arrow',
+		't-shirt',
 	]
 
 	_notepad.prepareNotepad(f" {_text}")
@@ -146,8 +146,8 @@ def test_moveByChar_symbolLevelWord():
 		'right paren',
 		'e',
 		'comma',
-		'right dash pointing arrow',
-		't dash shirt',
+		'right-pointing arrow',
+		't-shirt',
 	]
 
 	_notepad.prepareNotepad(f" {_text}")
