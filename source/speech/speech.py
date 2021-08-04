@@ -847,6 +847,10 @@ def speak(  # noqa: C901
 			speechSequence[index]=processText(curLanguage,item,symbolLevel)
 			if not inCharacterMode:
 				speechSequence[index]+=CHUNK_SEPARATOR
+		if isinstance(item, Symbol):
+			speechSequence[index] = Symbol(
+				text=processText(curLanguage, speechSequence[index].text, characterProcessing.SymbolLevel.NONE)
+			)
 	_manager.speak(speechSequence, priority)
 
 
@@ -1334,7 +1338,7 @@ def getTextInfoSpeech(  # noqa: C901
 	if onlyInitialFields or (
 		isWordOrCharUnit
 		and len(textWithFields) > 0
-		and len(textWithFields[0]) == 1
+		and len(textWithFields[0].strip() if not textWithFields[0].isspace() else textWithFields[0]) == 1
 		and all(isControlEndFieldCommand(x) for x in itertools.islice(textWithFields, 1, None))
 	):
 		if not onlyCache:
