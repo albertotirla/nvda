@@ -31,7 +31,7 @@ schemaVersion = integer(min=0, default={latestSchemaVersion})
 [speech]
 	# The synthesizer to use
 	synth = string(default=auto)
-	symbolLevel = integer(default=100)
+	symbolLevel = integer(default=100) # default: SOME
 	# Speak all symbols when reviewing by word, uses editor specific implementation if false
 	symbolLevelWordAll = boolean(default=true)
 	trustVoiceLanguage = boolean(default=true)
